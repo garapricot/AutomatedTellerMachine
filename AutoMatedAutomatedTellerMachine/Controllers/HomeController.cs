@@ -6,7 +6,7 @@ namespace AutoMatedAutomatedTellerMachine.Controllers
 {
     public class HomeController : Controller
     {
-        [HandleError(View = "SOError", ExceptionType = typeof(StackOverflowException))]
+        
         [MyLogginnigFilterAtributte]
         public ActionResult Index()
         {
@@ -37,14 +37,14 @@ namespace AutoMatedAutomatedTellerMachine.Controllers
 
         public ActionResult Serial(string letterCase)
         {
-            const string serial = "ASPNETATMMVC1";
+            var serial = "ASPNETATMMVC1";
             // return Json(new {name = "serial", value = serial}, JsonRequestBehavior.AllowGet);
             if (letterCase == "lower")
             {
                 return Content(serial.ToLower());
             }
-           
-              return RedirectToAction("Index");
+
+            return RedirectToAction("Index");
             
         }
     }

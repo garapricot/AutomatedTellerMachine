@@ -14,8 +14,8 @@ namespace AutoMatedAutomatedTellerMachine
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                name: "Serial Number",
-               url: "serial",
-               defaults: new { controller = "Home", action = "Serial" }
+               url: "serial/{letterCase}",
+               defaults: new { controller = "Home", action = "Serial",letterCase="upper" }
            );
             routes.MapRoute(
                 name: "Default",

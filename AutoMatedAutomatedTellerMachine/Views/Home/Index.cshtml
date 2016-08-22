@@ -29,3 +29,21 @@
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+we are using @Request.Browser.Browser, and that's OK! email us garegin.netplatforforever@gmail.com if you have any problems...
+@{var amounts = new List<Decimal> { 100, 25.50m, -40, 275.99m };
+     }
+<ul>
+    @foreach(decimal amount in amounts)
+    {
+        <li>@formatAmount(amount)</li>
+    }
+</ul>
+    @helper formatAmount(decimal amount)
+    {
+        var color = "green";
+        if (amount < 0)
+    {
+       color = "red";
+    }
+    <span style="color:@color">@String.Format("{0:c}",amount)</span>
+}
