@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Web.Mvc;
 using AutoMatedAutomatedTellerMachine.CustomAttributes;
+using System.Linq;
+using Microsoft.AspNet.Identity;
+using AutoMatedAutomatedTellerMachine.Contexts;
 
 namespace AutoMatedAutomatedTellerMachine.Controllers
 {
     public class HomeController : Controller
     {
-        
-        [MyLogginnigFilterAtributte]
+        private ApplicationDbContext db = new ApplicationDbContext();
+        [Authorize]
         public ActionResult Index()
-        {
+        {         
+            var userId = User.Identity.GetUserId();
+            var checkingAccountId = db.CheckingAccounts.Where(c => c.ApplicationUserId == userId).First().Id;
+            ViewBag.CheckingAccountId = checkingAccountId;
             return View();
-        }
-        [ActionName("about-this-atm")]
+        }        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

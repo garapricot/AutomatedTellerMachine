@@ -22,5 +22,7 @@ namespace AutoMatedAutomatedTellerMachine.Contexts
             return new ApplicationDbContext();
         }
         public DbSet<CheckingAccount> CheckingAccounts { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }
