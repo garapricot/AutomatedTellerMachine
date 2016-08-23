@@ -7,12 +7,20 @@ namespace AutoMatedAutomatedTellerMachine.Migrations
     {
         public override void Up()
         {
-            AlterColumn("dbo.ChechingAccounts", "AccountNumber", c => c.String(nullable: false, maxLength: 10, unicode: false));
+            DropForeignKey("dbo.CheckingAccounts", "ApplicationUserId", "dbo.AspNetUsers");
+            DropIndex("dbo.CheckingAccounts", new[] { "ApplicationUserId" });
+            AlterColumn("dbo.CheckingAccounts", "ApplicationUserId", c => c.String(nullable: false, maxLength: 128));
+            CreateIndex("dbo.CheckingAccounts", "ApplicationUserId");
+            AddForeignKey("dbo.CheckingAccounts", "ApplicationUserId", "dbo.AspNetUsers", "Id", cascadeDelete: true);
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.ChechingAccounts", "AccountNumber", c => c.String(nullable: false));
+            DropForeignKey("dbo.CheckingAccounts", "ApplicationUserId", "dbo.AspNetUsers");
+            DropIndex("dbo.CheckingAccounts", new[] { "ApplicationUserId" });
+            AlterColumn("dbo.CheckingAccounts", "ApplicationUserId", c => c.String(maxLength: 128));
+            CreateIndex("dbo.CheckingAccounts", "ApplicationUserId");
+            AddForeignKey("dbo.CheckingAccounts", "ApplicationUserId", "dbo.AspNetUsers", "Id");
         }
     }
 }
