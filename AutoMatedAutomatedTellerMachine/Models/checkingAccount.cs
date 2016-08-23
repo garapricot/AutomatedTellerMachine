@@ -24,10 +24,12 @@ namespace AutoMatedAutomatedTellerMachine.Models
         {
             get
             {
-                return string.Format("{0} {1}", this.FirstName, this.LastName);
+                return $"{this.FirstName} {this.LastName}";
             }
         }
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
+        public virtual ApplicationUser User { get; set; }
+        public string ApplicationUserId { get; set; }
     }
 }
