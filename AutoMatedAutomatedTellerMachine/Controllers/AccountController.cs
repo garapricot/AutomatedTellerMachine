@@ -8,6 +8,7 @@ using Microsoft.Owin.Security;
 using AutoMatedAutomatedTellerMachine.Models;
 using AutoMatedAutomatedTellerMachine.Contexts;
 using AutoMatedAutomatedTellerMachine.Services;
+using System.Security.Claims;
 
 namespace AutoMatedAutomatedTellerMachine.Controllers
 {
@@ -154,6 +155,7 @@ namespace AutoMatedAutomatedTellerMachine.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddClaim(user.Id,new Claim(ClaimTypes.GivenName,model.FirstName));
                     var service = new CheckingAccountService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
                     service.CreateCheckingAccount(model.FirstName,model.LastName,user.Id,0);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
