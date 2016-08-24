@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AutoMatedAutomatedTellerMachine.Models;
 using AutoMatedAutomatedTellerMachine.Contexts;
+using AutoMatedAutomatedTellerMachine.Services;
 
 namespace AutoMatedAutomatedTellerMachine.Controllers
 {
@@ -153,11 +154,8 @@ namespace AutoMatedAutomatedTellerMachine.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var db=new ApplicationDbContext();
-                    var accountNumber = (123456 + db.CheckingAccounts.Count()).ToString().PadLeft(10, '0');
-                    var checkingAccount=new CheckingAccount {FirstName = model.FirstName,LastName = model.LastName,AccountNumber = accountNumber,ApplicationUserId = user.Id};
-                    db.CheckingAccounts.Add(checkingAccount);
-                    db.SaveChanges();
+                    var service = new CheckingAccountService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+                    service.CreateCheckingAccount(model.FirstName,model.LastName,user.Id,0);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -377,6 +375,9 @@ namespace AutoMatedAutomatedTellerMachine.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        var service = new CheckingAccountService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+                        service.CreateCheckingAccount("Facebook", "User", user.Id, 500);
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
